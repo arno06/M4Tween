@@ -12,7 +12,7 @@ window.requestAnimFrame = (function(){
 
 /**
  * M4Tween - Javascript animation library
- * Copyright (C) 2009 - 2013  NICOLAS Arnaud <arno06@gmail.com>
+ * Copyright (C) 2009 - 2015  NICOLAS Arnaud <arno06@gmail.com>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
