@@ -410,6 +410,8 @@ M4TweenPlugins.rotate =
 			p = "WebkitTransform";
 		else if (M4.browser.FF)
 			p = "MozTransform";
+        else
+            p = "transform";
 		return new M4TweenInfos(p, s, t, tpl);
 	}
 };
