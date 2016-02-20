@@ -375,45 +375,96 @@ M4TweenPlugins.rotate =
 {
 	extractStartValue:function(pCtx)
 	{
-		var v = pCtx[this.property], t;
-		if(v)
-		{
-			if(v.indexOf("matrix")>-1)
-			{
-				t = v.match(/matrix\(([0-9\-\.e]+),\s*([0-9\-\.e]+),\s*([0-9\-\.e]+),\s*([0-9\-\.e]+),\s*([0-9\-\.epx]+),\s*([0-9\-\.epx]+)\)/i);
-				var c = Number(t[1]);
-				var s = Number(t[2]);
-				v = Math.atan2(s, c) * (180/Math.PI);
-				if(v<0)
-					v = 360 - v;
-
-			}
-			else
-			{
-				v = v.replace(/rotate\(/, "");
-				v = v.replace(/deg\)/, "");
-				v = v=="none"?0:v;
-			}
-		}
-		else
-			v = 0;
+	    var v = M4TweenGenericInfos.transform.extractStartValue(pCtx, this.property, this.templateValue.split("#value#"), function(pT){
+	        var c = Number(pT[0]);
+	        var s = Number(pT[1]);
+	        var value = Math.atan2(s, c) * (180 / Math.PI);
+	        if(value < 0)
+	            value = 360 - value;
+            return value;
+	    });
 		this.setStartValue(v);
 	},
 	newInfos:function(pProperty, pFinalValue)
 	{
-		var s = String(pFinalValue), p, tpl = "rotate(#value#)", t = "deg";
-		if((p=s.search(/deg/))>-1)
-			s = s.replace(/deg/, "");
-		if(M4.browser.IE)
-			p = "msTransform";
-		else if (M4.browser.CHROME||M4.browser.SAFARI)
-			p = "WebkitTransform";
-		else if (M4.browser.FF)
-			p = "MozTransform";
-        else
-            p = "transform";
-		return new M4TweenInfos(p, s, t, tpl);
+	    return M4TweenGenericInfos.transform.newInfos(pFinalValue, "rotate(#value#)", "deg");
 	}
+};
+
+M4TweenPlugins.translateX =
+{
+	extractStartValue:function(pCtx)
+	{
+	    var v = M4TweenGenericInfos.transform.extractStartValue(pCtx, this.property, this.templateValue.split("#value#"), function(pT){
+            return Number(pT[4]);
+	    });
+		this.setStartValue(v);
+	},
+	newInfos:function(pProperty, pFinalValue)
+	{
+	    return M4TweenGenericInfos.transform.newInfos(pFinalValue, "translateX(#value#)", "(px|%)");
+	}
+};
+
+M4TweenPlugins.translateY =
+{
+	extractStartValue:function(pCtx)
+	{
+	    var v = M4TweenGenericInfos.transform.extractStartValue(pCtx, this.property, this.templateValue.split("#value#"), function(pT){
+            return Number(pT[5]);
+	    });
+		this.setStartValue(v);
+	},
+	newInfos:function(pProperty, pFinalValue)
+	{
+	    return M4TweenGenericInfos.transform.newInfos(pFinalValue, "translateY(#value#)", "(px|%)");
+	}
+};
+
+var M4TweenGenericInfos = {
+    transform:{
+        newInfos:function(pFinalValue, pTemplate, pUnits)
+        {
+            var s = String(pFinalValue), p, tpl = pTemplate, t = pUnits, re = new RegExp(pUnits);
+            if((p=s.search(re))>-1)
+            {
+                t = s.substr(p);
+                s = s.replace(re, "");
+            }
+            if(M4.browser.IE)
+                p = "msTransform";
+            else if (M4.browser.CHROME||M4.browser.SAFARI)
+                p = "WebkitTransform";
+            else if (M4.browser.FF)
+                p = "MozTransform";
+            else
+                p = "transform";
+            return new M4TweenInfos(p, s, t, tpl);
+        },
+        extractStartValue:function(pCtx, pProperty, pTemplateParts, pCallback)
+        {
+    		var v = pCtx[pProperty], t;
+    		if(v)
+    		{
+    			if(v.indexOf("matrix")>-1)
+    			{
+    			    t = v.split('(')[1].replace(')', '').split(', ');
+    			    console.log(t);
+    				return pCallback(t);
+    
+    			}
+    			else
+    			{
+    				v = v.replace(pTemplateParts[0], "");
+    				v = v.replace(pTemplateParts[1], "");
+    				v = v=="none"?0:v;
+    			}
+    		}
+    		else
+    			v = 0;
+    		return v;
+        }
+    }
 };
 
 M4Tween.from = function(pStartValue)

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <script src="../src/M4Tween.js"></script>
+        <style>
+            .item{height:100px;position:relative;}
+            .item>div{width:100px;height:100px;background:#ff00ff;border-radius:10px;}
+            .item>div.translateZ{transform:perspective(500px);}
+        </style>
+        <script type="text/javascript">
+            function init()
+            {
+                document.querySelectorAll(".item>div").forEach(function(pItem){
+                    pItem.addEventListener("mouseover", itemOverHandler, false);
+                    pItem.addEventListener("mouseout", itemOutHandler, false);
+                });
+            }
+            
+            function itemOutHandler(e)
+            {
+                var t = e.currentTarget;
+                
+                var prop = t.getAttribute("class");
+                
+                var opt = {};
+                
+                opt[prop] = "0"+t.getAttribute("data-units");
+                
+                M4Tween.killTweensOf(t);
+                M4Tween.to(t, .5, opt);
+            }
+            
+            function itemOverHandler(e)
+            {
+                var t = e.currentTarget;
+                
+                var prop = t.getAttribute("class");
+                
+                var opt = {};
+                
+                opt[prop] = t.getAttribute("data-value")+t.getAttribute("data-units");
+                
+                M4Tween.killTweensOf(t);
+                M4Tween.to(t, .5, opt);
+            }
+            
+            NodeList.prototype.forEach = Array.prototype.forEach;
+            window.addEventListener("load", init, false);
+        </script>
+    </head>
+    <body>
+        <h1>M4Tween</h1>
+        <h2>Rotate</h2>
+        <div class="item">
+            <div class="rotate" data-value="45" data-units="deg"></div>
+        </div>
+        <h2>TranslateX</h2>
+        <div class="item">
+            <div class="translateX" data-value="45" data-units="px"></div>
+        </div>
+        <h2>TranslateY</h2>
+        <div class="item">
+            <div class="translateY" data-value="45" data-units="px"></div>
+        </div>
+        <h2>TranslateZ</h2>
+        <div class="item">
+            <div class="translateZ" data-value="45" data-units="px"></div>
+        </div>
+    </body>
+</html>
