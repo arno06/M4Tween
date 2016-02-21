@@ -421,6 +421,21 @@ M4TweenPlugins.translateY =
 	}
 };
 
+M4TweenPlugins.translateZ =
+{
+	extractStartValue:function(pCtx)
+	{
+	    var v = M4TweenGenericInfos.transform.extractStartValue(pCtx, this.property, this.templateValue.split("#value#"), function(pT){
+            return Number(pT[14]||"0");
+	    });
+		this.setStartValue(v);
+	},
+	newInfos:function(pProperty, pFinalValue)
+	{
+	    return M4TweenGenericInfos.transform.newInfos(pFinalValue, "translateZ(#value#)", "(px|%)");
+	}
+};
+
 var M4TweenGenericInfos = {
     transform:{
         newInfos:function(pFinalValue, pTemplate, pUnits)
