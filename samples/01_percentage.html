@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>M4Tween - percentage</title>
+        <style>
+            .dummy{
+                width:100%;
+                height:100px;
+                background:#ff0000;
+            }
+        </style>
+        <script src="../src/M4Tween.js"></script>
+    </head>
+    <body>
+        <div class="dummy"></div>
+
+        <script>
+            M4Tween.to(document.querySelector(".dummy"),1,{width:"10%"});
+        </script>
+    </body>
+</html>

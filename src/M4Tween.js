@@ -73,7 +73,7 @@ M4Tween.prototype =
 		}
 		while(f)
 		{
-			f.extractStartValue(t, this.useStyle);
+			f.extractStartValue(t, this.useStyle, this.context);
 			f = f.next;
 		}
 		if(this.startHandler)
@@ -357,9 +357,20 @@ M4TweenPlugins.opacity =
 
 M4TweenPlugins.defaultProp =
 {
-	extractStartValue:function(pCtx)
+	extractStartValue:function(pCtx, pUseStyle, pRealCtx)
 	{
-		this.setStartValue(String(pCtx[this.property]).replace(/(px|%)/,""));
+        var current = String(pCtx[this.property]);
+        if(this.type=="%")
+        {
+            var setCtx = pCtx;
+            if(pUseStyle)
+                setCtx = pRealCtx;
+            setCtx[this.property] = "auto";
+            var max = String(pCtx[this.property]).replace(/(px|%)/, '');
+            setCtx[this.property] = current;
+            current = Math.round((current.replace(/(px|%)/, "") / max) * 1000)/10;
+        }
+		this.setStartValue(String(current).replace(/(px|%)/,""));
 	},
 	newInfos:function(pProperty, pFinalValue)
 	{
