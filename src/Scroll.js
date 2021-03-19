@@ -27,7 +27,7 @@ var Scroll =
 					document.querySelectorAll('a.current')
 							.forEach(function(a)
 							{
-								if(a == t)
+								if(a === t)
 									return;
 								a.classList.remove("current");
 							});

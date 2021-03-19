@@ -11,7 +11,7 @@
         <script type="text/javascript">
             function init()
             {
-                document.querySelectorAll(".item>div").forEach(function(pItem){
+                document.querySelectorAll(".item>div[class]").forEach(function(pItem){
                     pItem.addEventListener("mouseover", itemOverHandler, false);
                     pItem.addEventListener("mouseout", itemOutHandler, false);
                 });

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>M4Tween - basics</title>
+        <style>
+            .dummy{
+                width:100px;
+                height:100px;
+                background:#ff0000;
+            }
+        </style>
+        <script src="../src/M4Tween.js"></script>
+    </head>
+    <body>
+        <div class="dummy first"></div>
+        <div class="dummy second"></div>
+
+        <script>
+            let first=document.querySelector(".dummy.first");
+            let second=document.querySelector(".dummy.second");
+            M4Tween.to(first,1,{width:"200px", delay:1});
+            M4Tween.to(first,1,{height:"200px", delay:2}).then(first, 1, {width:"0px", height:"0px"});
+            M4Tween.to(second,1,{translateX:"130px", translateY:"40px", delay:3}).then(second, 1, {translateY:"0px", translateX:"0px"});
+        </script>
+    </body>
+</html>
